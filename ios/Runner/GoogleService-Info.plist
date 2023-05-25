@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>210315915755-km2h2rd19rg6a8410at7tfv9sbrc0kql.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.210315915755-km2h2rd19rg6a8410at7tfv9sbrc0kql</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>210315915755-vjgu58v8ed56kjhc6tbst4m5qt57knb1.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDvgvDXs04fG3bOs8YOn63vW8T1c23HiUk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>210315915755</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.wanderinApp</string>
+	<key>PROJECT_ID</key>
+	<string>wanderin-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>wanderin-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:210315915755:ios:7a51f03e28274034e6e9ae</string>
+</dict>
+</plist>

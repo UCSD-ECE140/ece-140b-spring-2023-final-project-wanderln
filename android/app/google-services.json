@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "210315915755",
+    "project_id": "wanderin-app",
+    "storage_bucket": "wanderin-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210315915755:android:89f0655a1f8e73dfe6e9ae",
+        "android_client_info": {
+          "package_name": "com.example.wanderin_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210315915755-mt3vbi3ft2t665sbevj00942b0vvbv9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf0ufm-RGIV2WQdewgGe2P7_3WgkETwLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210315915755-6vo57s7muto3st69qga6n25cdg4qkvgh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "210315915755-km2h2rd19rg6a8410at7tfv9sbrc0kql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wanderinApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
