@@ -41,10 +41,6 @@ class _MainScreenState extends State<MainScreen> {
       'Pins',
       style: optionStyle,
     ),
-    // const Text(
-    //   'Add',
-    //   style: optionStyle,
-    // ),
     const AddPinScreen(), 
     const Text(
       'Saved',
