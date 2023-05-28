@@ -53,10 +53,22 @@ class AddPinScreenState extends State<AddPinScreen> {
   final Completer<GoogleMapController> _controller = Completer();
   Position? _position;
   LatLng? _sourceLocation;
+  Set<Marker> _markers = {}; // Maintain a set of markers
+
+  // Define the initial markers
+  Marker sourceMarker = const Marker(
+    markerId: MarkerId('sourceMarker'),
+    position: LatLng(0, 0), // Example coordinates for marker1
+  );
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _markers = {
+        sourceMarker,
+      }; // Initialize _markers with the two markers
+    });
   }
 
   @override
@@ -66,7 +78,7 @@ class AddPinScreenState extends State<AddPinScreen> {
         centerTitle: true,
         title: const Center(
           child: Text(
-            "Pin a Location",
+            "Hold to Drag Pin",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
@@ -88,21 +100,46 @@ class AddPinScreenState extends State<AddPinScreen> {
             // The future has completed successfully
             _position = snapshot.data;
             _sourceLocation = LatLng(_position!.latitude, _position!.longitude);
-            return GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: _sourceLocation ?? const LatLng(0, 0),
-                zoom: 17,
+            _markers.add(
+              Marker(
+                markerId: const MarkerId('sourceMarker'),
+                position: _sourceLocation ?? const LatLng(0, 0),
+                infoWindow: const InfoWindow(title: 'Pinned Location'),
+                draggable: true,
               ),
-              markers: {
-                const Marker(
-                  markerId: MarkerId("source"),
-                  position: LatLng(0, 0),
+            );
+
+            return Stack(
+              children: [
+                GoogleMap(
+                  onMapCreated: (controller) {
+                    _controller.complete(controller);
+                  },
+                  initialCameraPosition: CameraPosition(
+                    target: _sourceLocation ?? const LatLng(0, 0),
+                    zoom: 17,
+                  ),
+                  markers: _markers,
+                  zoomControlsEnabled: false,
                 ),
-              },
+                Positioned(
+                  bottom: 16,
+                  right: 16,
+                  child: FloatingActionButton(
+                    onPressed: _handleNextButtonPressed,
+                    tooltip: "Next",
+                    child: const Icon(Icons.arrow_forward),
+                  ),
+                ),
+              ],
             );
           }
         },
       ),
     );
+  }
+
+  void _handleNextButtonPressed() {
+    print("pressed");
   }
 }
