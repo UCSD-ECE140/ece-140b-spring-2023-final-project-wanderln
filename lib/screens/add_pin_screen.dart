@@ -75,6 +75,7 @@ class AddPinScreenState extends State<AddPinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Center(
           child: Text(
@@ -126,7 +127,7 @@ class AddPinScreenState extends State<AddPinScreen> {
                   bottom: 16,
                   right: 16,
                   child: FloatingActionButton(
-                    onPressed: _handleNextButtonPressed,
+                    onPressed: _openModal,
                     tooltip: "Next",
                     child: const Icon(Icons.arrow_forward),
                   ),
@@ -139,7 +140,65 @@ class AddPinScreenState extends State<AddPinScreen> {
     );
   }
 
-  void _handleNextButtonPressed() {
-    print("pressed");
+  void _openModal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String locationName = '';
+        String description = '';
+
+        return AlertDialog(
+          title: Text('Add Location'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: TextField(
+                  onChanged: (value) {
+                    locationName = value;
+                  },
+                  maxLength: 50,
+                  decoration: const InputDecoration(
+                    labelText: 'Location Name',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 1.0),
+                child: TextField(
+                  onChanged: (value) {
+                    description = value;
+                  },
+                  maxLength: 150,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    alignLabelWithHint: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Perform any validation or processing here
+                // Once done, you can close the modal
+                Navigator.pushReplacementNamed(context, '/pins');
+              },
+              child: const Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the modal without saving any data
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

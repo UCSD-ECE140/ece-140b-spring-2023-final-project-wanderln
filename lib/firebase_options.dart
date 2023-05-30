@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCf0ufm-RGIV2WQdewgGe2P7_3WgkETwLA',
+    apiKey: 'AIzaSyA4HPMIbxpuKhErie1M8PEy29rT1L1oNLw',
     appId: '1:210315915755:android:89f0655a1f8e73dfe6e9ae',
     messagingSenderId: '210315915755',
     projectId: 'wanderin-app',
@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDvgvDXs04fG3bOs8YOn63vW8T1c23HiUk',
+    apiKey: 'AIzaSyC82z0ufm2PCn2ZwKoyzKCE4pJ3BdaKfYQ',
     appId: '1:210315915755:ios:7a51f03e28274034e6e9ae',
     messagingSenderId: '210315915755',
     projectId: 'wanderin-app',
