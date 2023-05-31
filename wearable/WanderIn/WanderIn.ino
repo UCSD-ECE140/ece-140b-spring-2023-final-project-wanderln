@@ -1,5 +1,6 @@
 #include <Adafruit_GFX.h>     // Graphics library
 #include <Adafruit_ILI9341.h> // Display library
+#include <TinyGPS++.h>        // GPS library
 #include <SoftwareSerial.h>   // SoftwareSerial library
 
 // Display pins
@@ -12,6 +13,15 @@
 // Button pin
 #define BUTTON_PIN 21
 
+// GPS pins
+#define GPS_RX 16 
+#define GPS_TX 17
+#define GPS_BAUD 9600
+
+// GPS initialization
+TinyGPSPlus gps;
+SoftwareSerial ss(GPS_RX, GPS_TX, false);
+
 // States
 enum State
 {
@@ -23,7 +33,7 @@ enum State
 };
 
 // Initial state
-State state = State::OFF; // Change for debug
+State state = State::ON_CONNECTED_POST_NEARBY; // Change for debug
 
 // Display
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
@@ -38,65 +48,66 @@ void setup()
   initButton();
   initBuzzer();
   initDisplay();
+  initGPS();
 }
 
 // Loop
 void loop()
 {
   // TODO - get actual rotation
-  long double theCompassRotation = 0;
+  double theCompassRotation = 0;
+
+  double theCurrentLatitude = NULL;
+  double theCurrentLongitude = NULL;
+  //Serial.println(ss.read());
+  Serial.println(ss.read());
+  while (ss.available() > 0) {
+    if (gps.encode(ss.read())) {
+      if (gps.location.isValid()) {
+        theCurrentLatitude = gps.location.lat();
+        theCurrentLongitude = gps.location.lng();
+        Serial.println(theCurrentLatitude);
+        Serial.println(theCurrentLongitude);
+      }
+    }  
+  }
 
   // TODO - get actual coordinates
-  long double theLatitudeA = 38.88984594484824;
-  long double theLongitudeA = -76.728515625;
-  long double theLatitudeB = 38.89132224878997;
-  long double theLongitudeB = -76.72768339351313;
+  // double theLatitudeA = 38.88984594484824;
+  // double theLongitudeA = -76.728515625;
+  double thePostLatitude = 38.89132224878997;
+  double thePostLongitude = -76.72768339351313;
 
-  // long double theLatitudeA = NULL;
-  // long double theLongitudeA = NULL;
-  // long double theLatitudeB = NULL;
-  // long double theLongitudeB = NULL;
-
-  // Return if button have been pressed to turn off wearable
-  if (state != State::OFF && buttonPressed())
-  {
-    state = State::OFF;
-    return;
-  }
+  // double theLatitudeA = NULL;
+  // double theLongitudeA = NULL;
+  // double thePostLatitude = NULL;
+  // double thePostLongitude = NULL;
 
   // Switch statements for different states
   switch (state)
   {
   case State::OFF:
   {
-    tft.fillScreen(ILI9341_BLACK) if (buttonPressed())
-    {
-      state = State::ON_DISCONNECTED;
-    }
+    tft.fillScreen(ILI9341_BLACK);
     break;
   }
   case State::ON_DISCONNECTED:
   {
-    if (buttonPressed())
-    {
-      state = State::OFF;
-      break;
-    }
     tft.fillScreen(ILI9341_BLACK);
-    printCenteredText("Not connected", 5, ILI9341_WHITE);
-    while (state == State::ON_DISCONNECTED)
+    while (state == State::ON_DISCONNECTED) 
     {
-      // TODO - if connected, connect
       continue;
     }
+    printCenteredText("Not connected", 5, ILI9341_WHITE);
     break;
   }
   case State::ON_CONNECTED_NO_POSTS:
   {
-    if (theLatitudeB == NULL || theLongitudeB == NULL)
+    tft.fillScreen(ILI9341_BLACK);
+    if (thePostLatitude == NULL || thePostLongitude == NULL)
     {
-      long double theBearing = calculateBearing(theLatitudeA, theLongitudeA, theLatitudeB, theLongitudeB);
-      long double theDistance = calculateDistance(theLatitudeA, theLongitudeA, theLatitudeB, theLongitudeB);
+      double theBearing = calculateBearing(theCurrentLatitude, theCurrentLatitude, thePostLatitude, thePostLongitude);
+      double theDistance = calculateDistance(theCurrentLatitude, theCurrentLatitude, thePostLatitude, thePostLongitude);
       String theMessage1 = "Awaiting";
       String theMessage2 = "new posts";
       for (int i = 1; i <= 4; i++)
@@ -120,10 +131,11 @@ void loop()
   }
   case State::ON_CONNECTED_POST_NEARBY:
   {
-    if (theLatitudeB != NULL && theLongitudeB != NULL)
+    tft.fillScreen(ILI9341_BLACK);
+    if (thePostLatitude != NULL && thePostLongitude != NULL)
     {
-      long double theBearing = calculateBearing(theLatitudeA, theLongitudeA, theLatitudeB, theLongitudeB);
-      long double theDistance = calculateDistance(theLatitudeA, theLongitudeA, theLatitudeB, theLongitudeB);
+      double theBearing = calculateBearing(theCurrentLatitude, theCurrentLatitude, thePostLatitude, thePostLongitude);
+      double theDistance = calculateDistance(theCurrentLatitude, theCurrentLatitude, thePostLatitude, thePostLongitude);
       updateCompass(theCompassRotation, theBearing, theDistance);
       updateBuzzer(theDistance);
       delay(1000);
@@ -147,7 +159,7 @@ void loop()
 // Initialize Serial
 void initSerial()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void initButton()
@@ -170,43 +182,49 @@ void initDisplay()
   tft.setTextSize(TEXT_SIZE);
 }
 
+// Initialize the GPS
+void initGPS()
+{
+  pinMode(GPS_RX, INPUT);
+  pinMode(GPS_TX, OUTPUT);
+  ss.begin(GPS_BAUD);
+}
+
 // Checks if button have been pressed
 bool buttonPressed()
 {
-  int theButtonState = digitalRead(BUTTON_PIN);
-  bool buttonPressed = theButtonState == LOW;
-  delay(100); // to prevent debounce
-  return buttonPressed;
+  // TODO
+  return false;
 }
 
 // Calculate the bearing between two coordinates
-long double calculateBearing(long double aLatitudeA, long double aLongitudeA, long double aLatitudeB, long double aLongitudeB)
+double calculateBearing(double aLatitudeA, double aLongitudeA, double aLatitudeB, double aLongitudeB)
 {
   aLatitudeA = aLatitudeA * (PI / 180);
   aLongitudeA = aLongitudeA * (PI / 180);
   aLatitudeB = aLatitudeB * (PI / 180);
   aLongitudeB = aLongitudeB * (PI / 180);
-  long double theDeltaLongitude = aLongitudeB - aLongitudeA;
-  long double theX = cos(aLatitudeA) * sin(aLatitudeB) - sin(aLatitudeA) * cos(aLatitudeB) * cos(theDeltaLongitude);
-  long double theY = sin(theDeltaLongitude) * cos(aLatitudeB);
-  long double theBearing = atan2(theY, theX);
+  double theDeltaLongitude = aLongitudeB - aLongitudeA;
+  double theX = cos(aLatitudeA) * sin(aLatitudeB) - sin(aLatitudeA) * cos(aLatitudeB) * cos(theDeltaLongitude);
+  double theY = sin(theDeltaLongitude) * cos(aLatitudeB);
+  double theBearing = atan2(theY, theX);
   return (theBearing * (180 / PI)) - 90;
 }
 
 // Calculate the distance between two coordinates
-long double calculateDistance(long double aLatitudeA, long double aLongitudeA, long double aLatitudeB, long double aLongitudeB)
+double calculateDistance(double aLatitudeA, double aLongitudeA, double aLatitudeB, double aLongitudeB)
 {
-  const long double EARTH_RADIUS = 20925721.785; // in ft
+  const double EARTH_RADIUS = 20925721.785; // in ft
 
   aLatitudeA = aLatitudeA * (PI / 180);
   aLongitudeA = aLongitudeA * (PI / 180);
   aLatitudeB = aLatitudeB * (PI / 180);
   aLongitudeB = aLongitudeB * (PI / 180);
 
-  long double theDeltaLongitude = aLongitudeB - aLongitudeA;
-  long double theDeltaLatitude = aLatitudeB - aLatitudeA;
+  double theDeltaLongitude = aLongitudeB - aLongitudeA;
+  double theDeltaLatitude = aLatitudeB - aLatitudeA;
 
-  long double theDistance = sin(theDeltaLatitude / 2) * sin(theDeltaLatitude / 2) + cos(aLatitudeA) * cos(aLatitudeB) * sin(theDeltaLongitude / 2) * sin(theDeltaLongitude / 2);
+  double theDistance = sin(theDeltaLatitude / 2) * sin(theDeltaLatitude / 2) + cos(aLatitudeA) * cos(aLatitudeB) * sin(theDeltaLongitude / 2) * sin(theDeltaLongitude / 2);
   return 2 * asin(sqrt(theDistance)) * EARTH_RADIUS;
 }
 
@@ -222,7 +240,7 @@ void printCenteredText(String aText, int aLineNumber, int aColor)
 }
 
 // Update compass
-void updateCompass(long double aCompassRotation, long double aBearing, long double aDistance)
+void updateCompass(double aCompassRotation, double aBearing, double aDistance)
 {
   tft.fillScreen(ILI9341_BLACK);
   int theCenterX = (tft.height() / 2);
@@ -235,19 +253,19 @@ void updateCompass(long double aCompassRotation, long double aBearing, long doub
 }
 
 // Update buzzer
-void updateBuzzer(long double aDistance)
+void updateBuzzer(double aDistance)
 {
   // TODO
 }
 
 // Update compass labels
-void updateCompassLabels(long double aCompassRotation)
+void updateCompassLabels(double aCompassRotation)
 {
   int theCenterX = (tft.height() / 2);
   int theCenterY = (tft.width() / 2) - 40;
   int theRadius = theCenterY - 10;
   int theLabelDistance = theRadius - 20;
-  auto calculateLabel = [&](const char *aLabel, long double anAngle)
+  auto calculateLabel = [&](const char *aLabel, double anAngle)
   {
     int theX = theCenterX + theLabelDistance * sin((aCompassRotation + anAngle) * (PI / 180.0));
     int theY = theCenterY - theLabelDistance * cos((aCompassRotation + anAngle) * (PI / 180.0));
@@ -266,7 +284,7 @@ void updateCompassLabels(long double aCompassRotation)
 }
 
 // Update arrow
-void updateArrow(long double aCompassRotation, long double aBearing)
+void updateArrow(double aCompassRotation, double aBearing)
 {
   int theCenterX = (tft.height() / 2);
   int theCenterY = (tft.width() / 2) - 40;
@@ -294,7 +312,7 @@ void updateArrow(long double aCompassRotation, long double aBearing)
 }
 
 // Update distance label
-void updateDistanceLabel(long double aCompassRotation, long double aBearing, long double aDistance)
+void updateDistanceLabel(double aCompassRotation, double aBearing, double aDistance)
 {
   int theArrowAngle = aCompassRotation + aBearing;
   long theTruncatedDistance = aDistance;
