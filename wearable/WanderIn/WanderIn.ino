@@ -3,8 +3,8 @@
 #include <SoftwareSerial.h>   // SoftwareSerial library
 
 // Display pins
-#define TFT_CS     32
-#define TFT_DC     14
+#define TFT_CS 32
+#define TFT_DC 14
 
 // Buzzer pin
 #define BUZZER_PIN 12
@@ -44,7 +44,7 @@ void setup()
 void loop()
 {
   // TODO - get actual rotation
-  long double theCompassRotation = 0; 
+  long double theCompassRotation = 0;
 
   // TODO - get actual coordinates
   long double theLatitudeA = 38.88984594484824;
@@ -58,7 +58,7 @@ void loop()
   // long double theLongitudeB = NULL;
 
   // Return if button have been pressed to turn off wearable
-  if (state != State::OFF && buttonPressed()) 
+  if (state != State::OFF && buttonPressed())
   {
     state = State::OFF;
     return;
@@ -69,8 +69,7 @@ void loop()
   {
   case State::OFF:
   {
-    tft.fillScreen(ILI9341_BLACK)
-    if (buttonPressed()) 
+    tft.fillScreen(ILI9341_BLACK) if (buttonPressed())
     {
       state = State::ON_DISCONNECTED;
     }
@@ -78,14 +77,14 @@ void loop()
   }
   case State::ON_DISCONNECTED:
   {
-    if (buttonPressed()) 
+    if (buttonPressed())
     {
       state = State::OFF;
       break;
     }
     tft.fillScreen(ILI9341_BLACK);
     printCenteredText("Not connected", 5, ILI9341_WHITE);
-    while (state == State::ON_DISCONNECTED) 
+    while (state == State::ON_DISCONNECTED)
     {
       // TODO - if connected, connect
       continue;
@@ -275,13 +274,13 @@ void updateArrow(long double aCompassRotation, long double aBearing)
 
   // Dot in the middle
   tft.drawCircle(theCenterX, theCenterY, 2, ILI9341_WHITE);
-  
+
   // Main arrow line
   int theArrowAngle = aCompassRotation + aBearing;
   int theArrowTipX = theCenterX + theRadius * cos(theArrowAngle * PI / 180);
   int theArrowTipY = theCenterY + theRadius * sin(theArrowAngle * PI / 180);
   tft.drawLine(theCenterX, theCenterY, theArrowTipX, theArrowTipY, ILI9341_WHITE);
-  
+
   // Arrowhead
   int theArrowheadLength = 10;
   float theArrowheadAngle = atan2(theArrowTipY - theCenterY, theArrowTipX - theCenterX);
@@ -299,15 +298,17 @@ void updateDistanceLabel(long double aCompassRotation, long double aBearing, lon
 {
   int theArrowAngle = aCompassRotation + aBearing;
   long theTruncatedDistance = aDistance;
-  String theDistanceStr = theTruncatedDistance + String{ " ft" };
+  String theDistanceStr = theTruncatedDistance + String{" ft"};
 
   // Arrow is pointing up
-  if ((theArrowAngle > 0 && theArrowAngle <= 90) || (theArrowAngle > 270 && theArrowAngle <= 359)) {
+  if ((theArrowAngle > 0 && theArrowAngle <= 90) || (theArrowAngle > 270 && theArrowAngle <= 359))
+  {
     printCenteredText(theDistanceStr, 4, 0x07E0);
   }
 
   // Arrow is pointing down
-  else {
+  else
+  {
     printCenteredText(theDistanceStr, 7, 0x07E0);
   }
 }
