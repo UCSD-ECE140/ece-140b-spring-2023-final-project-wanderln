@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub/
 /build/
 
+*google-services.json
+
 # Symbolication related
 app.*.symbols
 
@@ -42,3 +44,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# API keys
+secrets.dart
+
