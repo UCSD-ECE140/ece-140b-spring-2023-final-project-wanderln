@@ -48,3 +48,7 @@ app.*.map.json
 # API keys
 secrets.dart
 
+# Ignore any file named google-services.json
+**/google-services.json
+
+
