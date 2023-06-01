@@ -14,6 +14,8 @@ class AddPinScreen extends StatefulWidget {
 }
 
 class AddPinScreenState extends State<AddPinScreen> {
+  late Future<Position> currentLocation;
+
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -69,6 +71,7 @@ class AddPinScreenState extends State<AddPinScreen> {
         sourceMarker,
       }; // Initialize _markers with the two markers
     });
+    currentLocation = _determinePosition();
   }
 
   @override
@@ -89,7 +92,7 @@ class AddPinScreenState extends State<AddPinScreen> {
         ),
       ),
       body: FutureBuilder<Position>(
-        future: _determinePosition(),
+        future: currentLocation,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Show a loading indicator while waiting for the future to complete

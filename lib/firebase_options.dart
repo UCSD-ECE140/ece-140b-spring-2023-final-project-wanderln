@@ -26,7 +26,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,21 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA4HPMIbxpuKhErie1M8PEy29rT1L1oNLw',
+    apiKey: 'AIzaSyB2-TTOMu_1RxyAGlbROfwCLAZUncEi8YM',
     appId: '1:210315915755:android:89f0655a1f8e73dfe6e9ae',
     messagingSenderId: '210315915755',
     projectId: 'wanderin-app',
     storageBucket: 'wanderin-app.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC82z0ufm2PCn2ZwKoyzKCE4pJ3BdaKfYQ',
-    appId: '1:210315915755:ios:7a51f03e28274034e6e9ae',
-    messagingSenderId: '210315915755',
-    projectId: 'wanderin-app',
-    storageBucket: 'wanderin-app.appspot.com',
-    androidClientId: '210315915755-vjgu58v8ed56kjhc6tbst4m5qt57knb1.apps.googleusercontent.com',
-    iosClientId: '210315915755-km2h2rd19rg6a8410at7tfv9sbrc0kql.apps.googleusercontent.com',
-    iosBundleId: 'com.example.wanderinApp',
   );
 }

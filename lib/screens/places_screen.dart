@@ -9,8 +9,6 @@ class PlacesScreen extends StatefulWidget {
 }
 
 class _PlacesScreenState extends State<PlacesScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +26,8 @@ class _PlacesScreenState extends State<PlacesScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

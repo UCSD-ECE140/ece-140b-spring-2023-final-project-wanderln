@@ -3,7 +3,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'add_pin_screen.dart';
 import 'places_screen.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'pins_screen.dart';
+import 'profile_screen.dart';
 
 enum TabItem { places, pins, saved, add, profile }
 
@@ -28,12 +29,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildSelectedTab() {
     switch (_selectedTab) {
       case TabItem.places:
-        return PlacesScreen();
+        return const PlacesScreen();
       case TabItem.pins:
-        return const Text(
-          'Pins',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
-        );
+        return const PinsScreen();
       case TabItem.saved:
         return const Text(
           'Saved',
@@ -42,16 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       case TabItem.add:
         return const AddPinScreen();
       case TabItem.profile:
-        return ProfileScreen(
-          actions: [
-            SignedOutAction((context) {
-              Navigator.pushReplacementNamed(context, '/sign-in');
-            }),
-            AuthStateChangeAction<SignedIn>((context, state) {
-              Navigator.pushReplacementNamed(context, '/main');
-            }),
-          ],
-        );
+        return const ProfileScreen();
     }
   }
 

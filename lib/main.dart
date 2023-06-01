@@ -5,15 +5,24 @@ import 'package:wanderin_app/screens/welcomescreen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'screens/screen_manager.dart';
+import 'package:provider/provider.dart';
+import 'providers/user_provider.dart';
 import 'color_schemes.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
-
   User? user = FirebaseAuth.instance.currentUser;
-  runApp(const MyApp());
+  if (user != null) {
+    print('The user ID is: ${user.uid}');
+  }
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => UserProvider()..setUser(user),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,8 +39,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
-
     final providers = [EmailAuthProvider()];
+
 
     return MaterialApp(
       theme: ThemeData(
@@ -46,7 +55,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       initialRoute:
-          FirebaseAuth.instance.currentUser == null ? '/welcome' : '/places',
+          context.read<UserProvider>().user == null ? '/welcome' : '/places',
       routes: {
         '/sign-in': (context) {
           return SignInScreen(
