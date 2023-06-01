@@ -32,7 +32,6 @@ migrate_working_dir/
 .pub/
 /build/
 
-*google-services.json
 
 # Symbolication related
 app.*.symbols
@@ -47,4 +46,8 @@ app.*.map.json
 
 # API keys
 secrets.dart
+
+# Ignore any file named google-services.json
+**/google-services.json
+
 
