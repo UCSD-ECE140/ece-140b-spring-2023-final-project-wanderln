@@ -151,7 +151,7 @@ class AddPinScreenState extends State<AddPinScreen> {
         String description = '';
 
         return AlertDialog(
-          title: Text('Add Location'),
+          title: const Text('Add Location'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

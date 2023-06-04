@@ -84,7 +84,7 @@ class WelcomePage extends StatelessWidget {
                       minWidth: double.infinity,
                       height: 60,
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/sign-in');
+                        Navigator.pushReplacementNamed(context, '/create-account');
                       },
                       color: const Color(0xFFFF5c6c),
                       elevation: 0,

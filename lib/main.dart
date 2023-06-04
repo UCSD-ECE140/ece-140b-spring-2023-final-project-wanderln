@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'screens/screen_manager.dart';
 import 'package:provider/provider.dart';
 import 'providers/user_provider.dart';
+import 'providers/bluetooth_provider.dart';
 import 'color_schemes.g.dart';
 
 void main() async {
@@ -15,14 +16,19 @@ void main() async {
   FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
-    print('The user ID is: ${user.uid}');
+    print('initial user ID is: ${user.uid}');
   }
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => UserProvider()..setUser(user),
-      child: const MyApp(),
-    ),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => UserProvider()..setUser(user),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => BluetoothProvider(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +46,7 @@ class MyApp extends StatelessWidget {
       ),
     );
     final providers = [EmailAuthProvider()];
-
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return MaterialApp(
       theme: ThemeData(
@@ -54,8 +60,7 @@ class MyApp extends StatelessWidget {
         outlinedButtonTheme: OutlinedButtonThemeData(style: buttonStyle),
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute:
-          context.read<UserProvider>().user == null ? '/welcome' : '/places',
+      initialRoute: userProvider.user == null ? '/welcome' : '/places',
       routes: {
         '/sign-in': (context) {
           return SignInScreen(
@@ -64,6 +69,15 @@ class MyApp extends StatelessWidget {
               AuthStateChangeAction<SignedIn>((context, state) {
                 Navigator.pushReplacementNamed(context, '/places');
               }),
+              AuthStateChangeAction<SigningUp>((context, state) async {
+                await FirebaseAuth.instance
+                    .authStateChanges()
+                    .firstWhere((user) => user != null);
+                final user = FirebaseAuth.instance.currentUser;
+                userProvider.setUser(user);
+                userProvider.createUser();
+                Navigator.pushReplacementNamed(context, '/places');
+              })
             ],
             styles: const {
               EmailFormStyle(signInButtonVariant: ButtonVariant.filled),
@@ -100,10 +114,21 @@ class MyApp extends StatelessWidget {
               AuthStateChangeAction<SignedIn>((context, state) {
                 Navigator.pushReplacementNamed(context, '/places');
               }),
+              AuthStateChangeAction<SigningUp>((context, state) async {
+                await FirebaseAuth.instance
+                    .authStateChanges()
+                    .firstWhere((user) => user != null);
+                final user = FirebaseAuth.instance.currentUser;
+                userProvider.setUser(user);
+                userProvider.createUser();
+                Navigator.pushReplacementNamed(context, '/places');
+              })
             ],
           );
         },
         '/places': (context) {
+          // final userProvider = UserProvider();
+          userProvider.setDisplayName();
           return const MainScreen(initialTab: TabItem.places);
         },
         '/pins': (context) {
