@@ -12,9 +12,7 @@ class BluetoothProvider with ChangeNotifier {
   
   bool _isConnected = false;
   bool get isConnected => _isConnected;
-  void getConnectedStatus() {
-    
-  }
+
 
   void setConnection(bool isConnected) {}
 

@@ -28,10 +28,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _displayNameError =
         displayName == '' ? 'Enter a valid display name to comment.' : '';
     _displayNameController = TextEditingController(text: displayName);
-    // setState(() {
-    //   displayName = userProvider.displayName;
-    //   print("displayname: $displayName");
-    // });
     super.initState();
   }
 
@@ -90,7 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final bluetoothProvider =
         Provider.of<BluetoothProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
