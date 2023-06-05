@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'providers/user_provider.dart';
 import 'providers/bluetooth_provider.dart';
 import 'color_schemes.g.dart';
+import '../providers/location_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,9 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (_) => BluetoothProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => LocationProvider(),
       ),
     ],
     child: const MyApp(),
@@ -47,6 +51,8 @@ class MyApp extends StatelessWidget {
     );
     final providers = [EmailAuthProvider()];
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    Provider.of<LocationProvider>(context, listen: false).determinePosition();
+    userProvider.setDisplayName();
 
     return MaterialApp(
       theme: ThemeData(
@@ -127,8 +133,6 @@ class MyApp extends StatelessWidget {
           );
         },
         '/places': (context) {
-          // final userProvider = UserProvider();
-          userProvider.setDisplayName();
           return const MainScreen(initialTab: TabItem.places);
         },
         '/pins': (context) {

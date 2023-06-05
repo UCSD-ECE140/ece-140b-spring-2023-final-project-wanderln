@@ -3,6 +3,7 @@ import '../widgets/card_widget.dart';
 
 class PlacesScreen extends StatefulWidget {
   const PlacesScreen({Key? key}) : super(key: key);
+  
 
   @override
   State<PlacesScreen> createState() => _PlacesScreenState();
@@ -11,6 +12,7 @@ class PlacesScreen extends StatefulWidget {
 class _PlacesScreenState extends State<PlacesScreen> {
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
