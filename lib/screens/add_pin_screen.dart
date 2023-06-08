@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import '../providers/location_provider.dart';
 import 'package:provider/provider.dart';
+import '../providers/user_provider.dart';
 
 class AddPinScreen extends StatefulWidget {
   const AddPinScreen({Key? key}) : super(key: key);
@@ -46,6 +47,10 @@ class AddPinScreenState extends State<AddPinScreen> {
         position: _sourceLocation ?? const LatLng(0, 0),
         infoWindow: const InfoWindow(title: 'Pinned Location'),
         draggable: true,
+        onDragEnd: (LatLng position) {
+          _sourceLocation = position;
+           print("new source: $_sourceLocation");
+        },
       ),
     );
 
@@ -97,6 +102,9 @@ class AddPinScreenState extends State<AddPinScreen> {
       builder: (BuildContext context) {
         String locationName = '';
         String description = '';
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        final locationProvider =
+            Provider.of<LocationProvider>(context, listen: false);
 
         return AlertDialog(
           title: const Text('Add Location'),
@@ -136,7 +144,23 @@ class AddPinScreenState extends State<AddPinScreen> {
               onPressed: () {
                 // Perform any validation or processing here
                 // Once done, you can close the modal
-                Navigator.pushReplacementNamed(context, '/pins');
+                if (_sourceLocation != null) {
+                  print(
+                      "lat being saved ${_sourceLocation!.latitude} long being saved ${_sourceLocation!.longitude}");
+                  final Position markerPositionAsPosition = Position(
+                    latitude: _sourceLocation!.latitude,
+                    longitude: _sourceLocation!.longitude,
+                    timestamp: DateTime.now(),
+                    accuracy: 0,
+                    altitude: 0,
+                    heading: 0,
+                    speed: 0,
+                    speedAccuracy: 0,
+                  );
+                  userProvider.createPin(
+                      locationName, description, markerPositionAsPosition);
+                  Navigator.pushReplacementNamed(context, '/pins');
+                }
               },
               child: const Text('Save'),
             ),
