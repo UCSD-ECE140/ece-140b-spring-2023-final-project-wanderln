@@ -130,6 +130,15 @@ class UserProvider with ChangeNotifier {
           await FirebaseFirestore.instance.collection('pins').add(pinData);
       final pinId = docRef.id;
       pinData['documentId'] = pinId;
+      Position currentLocation = await Geolocator.getCurrentPosition();
+      pinData['distance'] = calculateDistance(currentLocation.latitude,
+          currentLocation.longitude, location.latitude, location.longitude);
+      print(
+          "${pinData["locationName"]} will be added with distance ${pinData["distance"]}");
+
+      if ((pinData['distance'] as double) < 2) {
+        nearbyPins.add(pinData);
+      }
     }
   }
 
@@ -147,6 +156,12 @@ class UserProvider with ChangeNotifier {
           await FirebaseFirestore.instance.collection('trips').add(tripData);
       final tripId = docRef.id;
       tripData['documentId'] = tripId;
+      Position currentLocation = await Geolocator.getCurrentPosition();
+      tripData['distance'] = calculateDistance(currentLocation.latitude,
+          currentLocation.longitude, location.latitude, location.longitude);
+      if ((tripData['distance'] as double) < 2) {
+        nearbyTrips.add(tripData);
+      }
     }
   }
 

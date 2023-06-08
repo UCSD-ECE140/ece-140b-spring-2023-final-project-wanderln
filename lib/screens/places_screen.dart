@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/card_widget.dart';
+import 'package:wanderin_app/widgets/nearby_card_widget.dart';
 import 'package:provider/provider.dart';
 import '../providers/location_provider.dart';
 import '../providers/user_provider.dart';
@@ -60,66 +60,58 @@ class _PlacesScreenState extends State<PlacesScreen>
         controller: _tabController,
         children: [
           // Pins Tab
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  PlacesCard(
-                    title: 'Pin Card 1',
-                    subtitle: 'Pin Subtitle 1',
-                    childText: 'Pin Child Text 1',
-                    displayGo: true,
-                  ),
-                  SizedBox(height: 16),
-                  PlacesCard(
-                    title: 'Pin Card 2',
-                    subtitle: 'Pin Subtitle 2',
-                    childText: 'Pin Child Text 2',
-                    displayGo: true,
-                  ),
-                  SizedBox(height: 16),
-                  PlacesCard(
-                    title: 'Pin Card 3',
-                    subtitle: 'Pin Subtitle 3',
-                    childText: 'Pin Child Text 3',
-                    displayGo: true,
-                  ),
-                  // Add more PlacesCard widgets here if needed
-                ],
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (var pin in userProvider.nearbyPins)
+                      NearbyPinCard(
+                        title: pin['locationName'],
+                        subtitle: "${calculateDistance(
+                          locationProvider.currentLocation,
+                          pin['location'].longitude.toDouble(),
+                          pin['location'].latitude.toDouble(),
+                        ).toStringAsFixed(4)} Miles Away",
+                        childText: pin['description'],
+                        docId: pin['documentId'].toString(),
+                        isTrip: false,
+                        latitude: pin['location'].latitude.toDouble(),
+                        longitude: pin['location'].longitude.toDouble(),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
           // Trips Tab
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  PlacesCard(
-                    title: 'Trip Card 1',
-                    subtitle: 'Trip Subtitle 1',
-                    childText: 'Trip Child Text 1',
-                    displayGo: true,
-                  ),
-                  SizedBox(height: 16),
-                  PlacesCard(
-                    title: 'Trip Card 2',
-                    subtitle: 'Trip Subtitle 2',
-                    childText: 'Trip Child Text 2',
-                    displayGo: true,
-                  ),
-                  SizedBox(height: 16),
-                  PlacesCard(
-                    title: 'Trip Card 3',
-                    subtitle: 'Trip Subtitle 3',
-                    childText: 'Trip Child Text 3',
-                    displayGo: true,
-                  ),
-                  // Add more PlacesCard widgets here if needed
-                ],
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (var trip in userProvider.userTrips)
+                      NearbyPinCard(
+                        title: trip['tripName'],
+                        subtitle: "${calculateDistance(
+                          locationProvider.currentLocation,
+                          trip['location'].longitude.toDouble(),
+                          trip['location'].latitude.toDouble(),
+                        ).toStringAsFixed(4)} Miles Away",
+                        childText: trip['description'],
+                        docId: trip['documentId'].toString(),
+                        isTrip: true,
+                        latitude: trip['location'].latitude.toDouble(),
+                        longitude: trip['location'].longitude.toDouble(),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
