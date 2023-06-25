@@ -18,3 +18,7 @@ https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/asset
 |![Screenshot_20230611-171416](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/d4111104-9fa7-41c5-9f00-1a328ad8d92e)|![Screenshot_20230611-171433](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/2b13ce8f-cf0f-4729-a2c2-9462b530585e)|![Screenshot_20230611-171448](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/5210bef3-33a1-468c-8cfe-e5f74c8d8f82)|
 |![Screenshot_20230611-171458](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/33225aea-5475-4ac5-96a3-8fe6d33bb6d6)|![Screenshot_20230611-171503](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/69b8cbd8-0308-4e45-8b06-648b28cf4b07)|![Screenshot (Jun 11, 2023 5 49 33 PM)](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/ee526947-03bc-4c2e-911b-464482d11ec9)|
 
+## Wristband Component:
+![image](https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/bb157118-9ae7-4b00-8cdf-f4173b14d9a0)
+
+
