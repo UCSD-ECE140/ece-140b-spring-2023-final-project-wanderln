@@ -1,12 +1,11 @@
 # WanderIn: An Social Media Location Sharing App
+WanderIn is a social media app available for iOS and Android that aims to nurture the spirit of exploration in people. The app includes a smart wristband that helps users navigate to new posts and locations close to their current location. Users can add pins and trips to their app, allowing them to navigate and explore different destinations. The app also allows users to share their locations with friends. Key findings from user feedback indicate that users prefer an affordable and personalized tour experience that is not shared. The app focuses on reliability by including a GPS chip in the wristband, eliminating the need for Wi-Fi, and allowing users to store trips and posts locally. The target market includes organizations in the tourism industry, such as museums and parks, that can use WanderIn to make their destinations more interactive and informative. The app differentiates itself from competitors by providing precise tagging of content to specific locations, promoting exploration and interaction with the real world. 
 
-A new Flutter project for WanderIn
 
+Learn more about WanderIn in our report. The APK is avaliable for Android in the releases tab. Additional configuration is required for building the IOS application.  
 
 
 https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/5e7dfe5f-d23d-479e-81d8-de79977e8d59
-
-
 
 https://github.com/UCSD-ECE140/ece-140b-spring-2023-final-project-wanderln/assets/53395124/1386d99d-0a00-4442-a074-421c2c58c365
 
